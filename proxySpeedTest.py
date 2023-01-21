@@ -215,6 +215,7 @@ def inputdata(filename, arrayname=[]):
         htmlRO = handle.read()
 
     x = re.findall(r"(?:[0-9]{1,3}\.){3}[0-9]{1,3}[\s:\t][0-9]{1,5}", htmlRO)
+    x = list(set(x))
     for line in range(len(x)):
         x[line] = re.sub(r'[\s]', ':', x[line])
 
@@ -278,11 +279,12 @@ def filelength(url):
         )
 
 
-def fileSmirror(protocol):
+def filesMirror(protocol):
     if NAMESPACE.url is None:
         if protocol != "https":
             ps = '\t[1] GoogleFiber' \
-                '\n\t[2] bd.archive.ubuntu.com\n\nSelect Mirror : '
+                '\n\t[2] bd.archive.ubuntu.com' \
+                '\n\t[3] speedtest sgp\n\nSelect Mirror : '
             choice = int(input(ps))
             if choice == 1:
                 mirror = 'http://provo.speed.googlefiber.net:3004/' \
@@ -292,6 +294,9 @@ def fileSmirror(protocol):
                 mirror = 'http://bd.archive.ubuntu.com/ubuntu/' \
                         'indices/override.oneiric.universe'
                 file_size = 1062124
+            elif choice == 3:
+                mirror = 'http://speedtest-sgp1.digitalocean.com/10mb.test'
+                file_size = 10485760
         else:
             mirror = 'https://drive.google.com/uc?' \
                 'authuser=0&id=0B1MVW1mFO2zmSnZKYlNmT3pjbFE&export=download'
@@ -336,7 +341,7 @@ if __name__=="__main__":
         protocol = whichProtocol("\n\nWhich's protocol do you want use with ")
         clear()
         print(banner)
-        mirror, file_size = fileSmirror(protocol)
+        mirror, file_size = filesMirror(protocol)
         netloc = parse.urlparse(mirror).netloc
         clear()
         print(banner)
